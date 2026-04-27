@@ -333,6 +333,7 @@ python src/build_fs.py
 -   **Melhorias Futuras:** Integração com módulos GSM para conectividade rural e implementação de Deep Sleep total para autonomia de longa duração.
 
 ---
+
 > Projeto submetido para avaliação técnica - Intensivo Maker | IoT.
 """
 
