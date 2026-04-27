@@ -1,3 +1,4 @@
+print("Teste")
 from machine import ADC, Pin, SoftI2C, PWM
 import machine
 import time
@@ -6,7 +7,6 @@ import urequests
 import ujson
 import gc
 
-print("teste")
 # Ajuste de frequência para economia de energia (80MHz é o mínimo para Wi-Fi estável)
 machine.freq(80000000)
 
