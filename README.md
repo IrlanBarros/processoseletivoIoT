@@ -333,7 +333,6 @@ python src/build_fs.py
 ---
 
 > Projeto submetido para avaliação técnica - Intensivo Maker | IoT.
-"""
 
 > ✅ Este relatório faz parte da avaliação técnica.  
 > Clareza, objetividade e organização são tão importantes quanto o funcionamento do código.
