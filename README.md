@@ -233,7 +233,7 @@ Após concluir o desenvolvimento:
 
 import os
 
-## Relatório do Projeto: ArgosGuard – Sensor Inteligente de Fadiga
+## Relatório do Projeto: ArgosGuard – Sensor Inteligente de Fadiga 
 
 Este repositório contém a solução para o desafio técnico do Intensivo Maker | IoT. O projeto **ArgosGuard** é um sistema embarcado focado na segurança rodoviária, utilizando IoT para monitorizar a atenção do condutor.
 
