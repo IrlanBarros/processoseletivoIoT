@@ -231,86 +231,110 @@ Após concluir o desenvolvimento:
 
 ## 📝 Relatório do Candidato
 
-O arquivo **`README.md` do seu repositório** deve ser utilizado como o  
-**relatório final do desafio técnico**.
+import os
 
-Preencha todas as seções abaixo de forma **clara, objetiva e técnica**.
+## Relatório do Projeto: ArgosGuard – Sensor Inteligente de Fadiga
 
-> 💡 **Dica importante**  
-> Não é necessário um relatório extenso.  
-> O principal critério é demonstrar **clareza nas decisões técnicas**, organização e entendimento do sistema embarcado desenvolvido.
+Este repositório contém a solução para o desafio técnico do Intensivo Maker | IoT. O projeto **ArgosGuard** é um sistema embarcado focado na segurança rodoviária, utilizando IoT para monitorizar a atenção do condutor.
 
 ---
 
 ### 👤 Identificação do Candidato
-
-- **Nome completo:**  
-- **GitHub:**  
+- **Nome completo:** Francisco Irlan de Oliveira Barros
+- **GitHub:** https://github.com/IrlanBarros
 
 ---
 
 ## 1️⃣ Visão Geral da Solução
 
-Descreva, em poucas palavras:
+O **ArgosGuard** é um sensor de segurança vestível (*wearable*) desenhado para prevenir acidentes causados por fadiga ou micro-sono. O sistema utiliza um acelerómetro para identificar inclinações excessivas da cabeça do condutor que indiquem sonolência.
 
-- Qual é o objetivo do seu projeto  
-- O que o sistema embarcado simulado faz  
-- Como o usuário interage com ele (se aplicável)
+### 🚨 Problemática e Importância
+A fadiga ao volante é uma das causas mais comuns de acidentes graves em estradas. O condutor muitas vezes não percebe o início do sono. O ArgosGuard atua como uma camada de proteção ativa:
+1.  **Detecção em Tempo Real:** Identifica a queda da cabeça instantaneamente.
+2.  **Alerta Imediato:** Aciona um buzzer e LED para despertar o condutor.
+3.  **Monitorização Remota:** Notifica terceiros via Telegram, permitindo uma intervenção externa se necessário.
 
 ---
 
 ## 2️⃣ Arquitetura do Sistema Embarcado
 
-Explique a arquitetura lógica do seu projeto, abordando:
+A arquitetura foi pensada para ser robusta, eficiente e interativa, utilizando **MicroPython**:
 
-- Fluxo principal do programa (`main.py`)  
-- Estrutura de estados, loops ou temporizações  
-- Como os componentes interagem entre si  
-
-Se desejar, utilize tópicos ou um pequeno diagrama em texto.
+-   **Processamento de Sinal:** Implementação de um Filtro Passa-Baixa (EMA) para suavizar as leituras do sensor e evitar alarmes falsos causados por vibrações do veículo.
+-   **Lógica de Negócio:** Monitorização de tempo de fadiga (3 segundos) e lógica de normalização após resets.
+-   **Gestão de Energia:** Redução da frequência do CPU para 80MHz e uso de amostragem adaptativa (*Duty Cycling*) para prolongar a vida útil da bateria.
+-   **Comunicação IoT:** Integração bidirecional com a API do Telegram para alertas e comandos remotos.
 
 ---
 
 ## 3️⃣ Componentes Utilizados na Simulação
 
-Liste os principais componentes definidos no `diagram.json`, por exemplo:
+Os componentes foram selecionados para criar um protótipo funcional no **Wokwi**:
 
-- Tipo de placa utilizada  
-- LEDs, botões, sensores, atuadores, etc.  
-- Função de cada componente no sistema  
+-   **ESP32 DevKit V4:** Microcontrolador principal com Wi-Fi nativo.
+-   **MPU6050:** Acelerómetro e Giroscópio para medir o ângulo de inclinação.
+-   **Buzzer Piezoelétrico:** Alerta sonoro de alta intensidade (Pino 18).
+-   **LED Vermelho:** Sinalização visual de alerta (Pino 5).
+-   **Botão de Pressão:** Utilizado para reset físico e recalibração (Pino 4).
+-   **Potenciómetro:** Simula a descarga de uma bateria para testes de telemetria (Pino 34).
 
 ---
 
 ## 4️⃣ Decisões Técnicas Relevantes
 
-Explique brevemente decisões importantes tomadas durante o desenvolvimento, como:
-
-- Organização do código  
-- Uso de funções, estados ou constantes  
-- Estratégias para temporização ou controle lógico  
-
----
-
-## 5️⃣ Resultados Obtidos
-
-Descreva o comportamento final do sistema:
-
-- O que funciona corretamente  
-- Quais requisitos foram atendidos  
-- Resultado observado na simulação do Wokwi  
+-   **Calibração Dinâmica:** O sistema não assume um "zero" fixo; ele calibra-se de acordo com a posição inicial do motorista ao ligar ou via comando.
+-   **Amostragem Adaptativa:** Em estado normal, o sistema lê o sensor a cada 800ms. Se detectar inclinação, a taxa sobe para 50ms para garantir precisão no disparo do alarme.
+-   **Estabilidade de Memória:** Uso extensivo de `gc.collect()` e codificação manual de bytes em UTF-8 para evitar *crashes* de memória ao enviar emojis via Telegram.
+-   **Segurança de Dados:** O sistema valida o `CHAT_ID` do remetente para garantir que apenas o utilizador autorizado possa enviar comandos ao sensor.
 
 ---
 
-## 6️⃣ Comentários Adicionais (Opcional)
+## 5️⃣ Resultados Obtidos e Funcionalidades
 
-Utilize este espaço para comentar, se desejar:
+O sistema encontra-se 100% funcional, apresentando os seguintes recursos:
 
-- Dificuldades encontradas  
-- Limitações da solução  
-- Melhorias que você faria com mais tempo  
-- Principais aprendizados durante o desafio  
+-   **Detecção de Fadiga:** Alarme sonoro/visual e mensagem no Telegram após 3 segundos de inclinação.
+-   **Monitorização de Bateria:** Alerta automático no Telegram quando a bateria está fraca, com *cooldown* de 5 minutos para evitar spam.
+-   **Interatividade via Telegram:**
+    -   `/status`: Relatório de bateria, inclinação e estado de alerta.
+    -   `/recalibrar`: Ajusta o "zero" do sensor remotamente.
+    -   `/reset`: Silencia o alarme e reinicia o sistema remotamente.
+    -   `/limiar [valor]`: Ajusta a sensibilidade do sensor sem precisar de reprogramar a placa.
 
 ---
+
+## 🚀 Instruções para o Avaliador
+
+Para testar o projeto corretamente, siga os passos abaixo:
+
+### 1. Configuração do Telegram
+Para receber as notificações no seu telemóvel, é necessário configurar as credenciais no topo do ficheiro `src/main.py`:
+
+1.  **BOT_TOKEN:**
+    -   No Telegram, procure pelo `@BotFather`.
+    -   Crie um novo bot com `/newbot` e copie o Token gerado.
+2.  **CHAT_ID:**
+    -   Procure pelo bot `@ArgosGuard`.
+    -   Envie qualquer mensagem e ele responderá com o seu **Id** numérico.
+3.  **Ativação:** Procure pelo bot que criou e clique em **Começar/Start**.
+
+### 2. Como Rodar
+O projeto utiliza um sistema de ficheiros simulado. No seu ambiente local ou Dev Container, execute o seguinte comando antes de iniciar a simulação no Wokwi:
+
+```bash
+python src/build_fs.py
+```
+
+## 6️⃣ Comentários Adicionais
+
+-   **Desafios Técnicos:** A gestão de memória RAM ao lidar com requisições HTTPS e o tratamento de instabilidades no `light_sleep` do firmware v1.24.1 foram os principais obstáculos, resolvidos com otimização de código e amostragem adaptativa.
+-   **Aprendizados:** Como professor de robótica, este projeto reforçou a importância do **Processamento Digital de Sinais (DSP)** na base de qualquer sistema de segurança confiável.
+-   **Melhorias Futuras:** Integração com módulos GSM para conectividade rural e implementação de Deep Sleep total para autonomia de longa duração.
+
+---
+> Projeto submetido para avaliação técnica - Intensivo Maker | IoT.
+"""
 
 > ✅ Este relatório faz parte da avaliação técnica.  
 > Clareza, objetividade e organização são tão importantes quanto o funcionamento do código.
