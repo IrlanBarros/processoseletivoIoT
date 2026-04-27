@@ -16,8 +16,8 @@ machine.freq(80000000)
 WIFI_SSID = "Wokwi-GUEST"
 WIFI_PASS = ""
 
-BOT_TOKEN = "8728927536:AAHqVBxaiQSK2mQiXsATxJQVo7jG89y89oE"
-CHAT_ID   = "5461814823"
+BOT_TOKEN = ""
+CHAT_ID   = ""
 
 # Limiares de detecção e tempo
 THRESHOLD_TILT     = 3000  
