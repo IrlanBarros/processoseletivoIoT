@@ -245,13 +245,19 @@ Este repositório contém a solução para o desafio técnico do Intensivo Maker
 
 ## 1️⃣ Visão Geral da Solução
 
-O **ArgosGuard** é um sensor de segurança vestível (*wearable*) desenhado para prevenir acidentes causados por fadiga ou micro-sono. O sistema utiliza um acelerómetro para identificar inclinações excessivas da cabeça do condutor que indiquem sonolência.
+O **ArgosGuard** é um ecossistema de segurança vestível (*wearable*) inteligente, projetado para atuar como uma camada de proteção crítica contra a exaustão humana em ambientes rodoviários. Utilizando hardware IoT de baixo custo e alta eficiência, o sistema monitora a inclinação da cabeça do condutor para identificar padrões de sonolência em tempo real.
+
+### 🏛️ Origem do Nome
+O nome é uma referência direta a **Argos Panoptes**, o gigante da mitologia grega que possuía cem olhos. Por nunca fechar todos os olhos ao mesmo tempo — mantendo sempre uma parte de si vigilante enquanto a outra descansava — Argos era o guardião absoluto. O **ArgosGuard** encarna esse arquétipo: um sentinela digital que compensa a vulnerabilidade do condutor, garantindo que a vigilância não cesse mesmo quando o cansaço surge.
+
+---
 
 ### 🚨 Problemática e Importância
-A fadiga ao volante é uma das causas mais comuns de acidentes graves em estradas. O condutor muitas vezes não percebe o início do sono. O ArgosGuard atua como uma camada de proteção ativa:
-1.  **Detecção em Tempo Real:** Identifica a queda da cabeça instantaneamente.
-2.  **Alerta Imediato:** Aciona um buzzer e LED para despertar o condutor.
-3.  **Monitorização Remota:** Notifica terceiros via Telegram, permitindo uma intervenção externa se necessário.
+A fadiga ao volante é frequentemente chamada de "assassino silencioso". Diferente de outras infrações, o sono não avisa quando vai dominar o condutor, resultando em "micro-sonos" que podem levar a acidentes fatais em poucos segundos.
+A importância do ArgosGuard reside em três pilares fundamentais:
+* **Prevenção Ativa:** Ao contrário de sistemas passivos, este dispositivo atua antes do impacto, utilizando alertas sonoros e visuais para despertar o motorista no primeiro sinal de fadiga.
+* **Intervenção Externa:** Através da integração com o Telegram, o sistema rompe o isolamento do condutor, permitindo que gestores de frota ou familiares recebam alertas de perigo em tempo real.
+* **Democratização da Segurança:** Por ser uma solução baseada em componentes acessíveis e código aberto, oferece tecnologia de ponta para motoristas autônomos que não possuem acesso a veículos equipados com sensores de fábrica.
 
 ---
 
@@ -278,6 +284,12 @@ Os componentes foram selecionados para criar um protótipo funcional no **Wokwi*
 -   **Potenciómetro:** Simula a descarga de uma bateria para testes de telemetria (Pino 34).
 
 ---
+
+### 🧩 Diagrama no Wokwi
+
+Abaixo está o diagrama completo da montagem utilizada na simulação:
+
+![Diagrama do Projeto no Wokwi](assets/Wokwi.png)
 
 ## 4️⃣ Decisões Técnicas Relevantes
 
@@ -323,6 +335,7 @@ O projeto utiliza um sistema de ficheiros simulado. No seu ambiente local ou Dev
 ```bash
 python src/build_fs.py
 ```
+> **Nota Técnica:** Este comando compila os scripts Python e arquivos de configuração no binário `fs.bin`. O simulador Wokwi exige este binário para montar o sistema de arquivos virtual da ESP32. Sem ele, a simulação não encontrará os arquivos de código para execução.
 
 ## 6️⃣ Comentários Adicionais
 
